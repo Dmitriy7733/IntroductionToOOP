@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 using namespace std;
 
 class String;
@@ -6,8 +6,8 @@ String operator+(const String& left, const String& right);
 
 class String
 {
-	int size;//ðàçìåð ñòðîêè â áàéòàõ
-	char* str; //àäðåñ ñòðîêè â äèíàìè÷åñêîé ïàìÿòè
+	int size;//Ñ€Ð°Ð·Ð¼ÐµÑ€ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð² Ð±Ð°Ð¹Ñ‚Ð°Ñ…
+	char* str; //Ð°Ð´Ñ€ÐµÑ ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð² Ð´Ð¸Ð½Ð°Ð¼Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¿Ð°Ð¼ÑÑ‚Ð¸
 
 public:
 	int get_size()const
@@ -30,7 +30,7 @@ public:
 	}
 	String(const char str[])
 	{
-		this->size = strlen(str) + 1;//ïîñêîëüêî êëàññ õðàíèò ðàçìåð â áàéòàõ +1 íóæåí äëÿ õðàíåíèÿ NULL-òåðìèíàòîð
+		this->size = strlen(str) + 1;//Ð¿Ð¾ÑÐºÐ¾Ð»ÑŒÐºÐ¾ ÐºÐ»Ð°ÑÑ Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð² Ð±Ð°Ð¹Ñ‚Ð°Ñ… +1 Ð½ÑƒÐ¶ÐµÐ½ Ð´Ð»Ñ Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ñ NULL-Ñ‚ÐµÑ€Ð¼Ð¸Ð½Ð°Ñ‚Ð¾Ñ€
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << this << endl;
