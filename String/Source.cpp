@@ -3,7 +3,8 @@ using namespace std;
 
 class String;
 String operator+(const String& left, const String& right);
-
+bool operator == (const String& left, const String& right);
+bool operator!=(const String& left, const String& right);
 class String
 {
 	int size;//размер строки в байтах
@@ -42,6 +43,15 @@ public:
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor: " << endl;
 	}
+	String(String&& other) noexcept
+	{
+		//Shallow copy:
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveConstructor:\t" << this << endl;
+	}
 	~String()
 	{
 		delete[] this->str;
@@ -50,16 +60,38 @@ public:
 	//Operators
 	String& operator=(const String& other)
 	{
-		delete[]str;
+		/*int a = 2;
+		int b = 3;
+		a = b;*/
+		delete[] str;
 		this->size = other.size;
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 		{
 			this->str[i] = other.str[i];
 		}
-		cout << "CopyAssigment";
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	String& operator=(String&& other) noexcept//noexcept согласно рекомендаций компилятора
+	{
+		if (this != &other)
+		{
+			delete[] str;
+			str = other.str;
+			size = other.size;
+			other.str = nullptr;
+			other.size = 0;
+
+		}
+		return *this;
 	}
 	
+	String& operator+=(const String& other)
+	{
+		return *this = *this + other;
+	}
+
 	char operator[](int i)const
 	{
 		return str[i];
@@ -73,10 +105,7 @@ public:
 		cout << "Size: " << size << endl;
 		cout << "Str:  " << str << endl;
 	}
-	String& operator +=(const String& other)
-	{
-		return *this = *this + other;
-	}
+	
 };
 String operator+(const String& left, const String& right)
 {
@@ -94,6 +123,25 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
 }
+
+bool operator == (const String& left, const String& right)
+{
+	if (left.get_size() != right.get_size())
+	{
+		return false;
+	}
+	for (int i = 0; i < left.get_size(); i++)
+	{
+		if (left[i] != right[i])
+			return false;
+	}
+	return true;
+}
+bool operator!=(const String& left, const String& right)
+{
+	return !(left == right);
+}
+
 #define HOME_WORK
 void main()
 {
@@ -111,6 +159,11 @@ void main()
 
 	String str3 = str1 + str2;
 	cout << str3 << endl;
+	String str4 = str1;
+	cout << str4 << endl;
+	
+	String str5 = move(str2);
+	cout << str5 <<endl;
 #endif HOME_WORK
-
+	
 }
