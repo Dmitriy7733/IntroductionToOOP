@@ -3,7 +3,7 @@ using namespace std;
 
 class String;
 String operator+(const String& left, const String& right);
-bool operator == (const String& left, const String& right);
+bool operator==(const String& left, const String& right);
 bool operator!=(const String& left, const String& right);
 class String
 {
@@ -23,27 +23,27 @@ public:
 	{
 		return str;
 	}
-	explicit String(int size = 80)
+	explicit String(int size = 80) : size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "Constructor:\t" << this << endl;
 	}
-	String(const char str[])
+	String(const char str[]) :size(strlen(str)+1), str(new char[size] {})
 	{
-		this->size = strlen(str) + 1;//посколько класс хранит размер в байтах +1 нужен для хранения NULL-терминатор
-		this->str = new char[size] {};
-		for (int i = 0; i < size; i++)this->str[i] = str[i];
+		//this->size = strlen(str) + 1;//посколько класс хранит размер в байтах +1 нужен для хранения NULL-терминатор
+		//this->str = new char[size] {};
+		for (int i = 0; i < size; i++) this->str[i] = str[i];
 		cout << "Constructor:\t" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other) :size(other.size), str(new char[size] {})
 	{
-		this->size = other.size;
-		this->str = new char[size] {};
+		//this->size = other.size;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor: " << endl;
 	}
-	String(String&& other) noexcept
+	String(String&& other)noexcept :size(other.size), str(new char[size] {})
 	{
 		//Shallow copy:
 		this->size = other.size;
@@ -60,9 +60,10 @@ public:
 	//Operators
 	String& operator=(const String& other)
 	{
-		/*int a = 2;
-		int b = 3;
-		a = b;*/
+		if (this == &other)
+		{
+			return *this;
+		}
 		delete[] str;
 		this->size = other.size;
 		this->str = new char[size] {};
@@ -73,7 +74,7 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-	String& operator=(String&& other) noexcept//noexcept согласно рекомендаций компилятора
+	String& operator=(String&& other)noexcept//noexcept согласно рекомендаций компилятора
 	{
 		if (this != &other)
 		{
@@ -124,7 +125,7 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.get_str();
 }
 
-bool operator == (const String& left, const String& right)
+bool operator==(const String& left, const String& right)
 {
 	if (left.get_size() != right.get_size())
 	{
